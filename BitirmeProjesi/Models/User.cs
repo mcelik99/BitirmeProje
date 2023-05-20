@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BitirmeProjesi.Models
 {
-    public  class User : Microsoft.AspNetCore.Identity.IdentityUser<int>
+    public class User : Microsoft.AspNetCore.Identity.IdentityUser<int>
     {
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
@@ -15,5 +15,11 @@ namespace BitirmeProjesi.Models
         public virtual List<Chat>? Chats { get; set; }
         public virtual List<PeriodStudent>? PeriodStudents { get; set; }
         public virtual List<Period>? Periods { get; set; }
+
+
+        public string FullName()
+        {
+            return this.Name + " " + this.Surname;
+        }
     }
 }

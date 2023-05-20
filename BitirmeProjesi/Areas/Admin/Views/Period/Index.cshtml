@@ -15,6 +15,7 @@
             <th>Bitiş Tarihi</th>
             <th>Oluşturan Kullanıcı</th>
             <th>Oluşturma Tarihi</th>
+            <th></th>
 
         </tr>
         @foreach (var period in Model)
@@ -25,6 +26,11 @@
                 <td>@period.FinishAt</td>
                 <td>@period.CreateAt</td>
                 <td>@period.CreateUser.Name</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@period.Id">
+                        Detay
+                    </a>
+                </td>
             </tr>
         }
     </table>
