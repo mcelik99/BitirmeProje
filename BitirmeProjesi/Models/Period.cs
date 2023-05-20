@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BitirmeProjesi.Models
 {
@@ -13,6 +12,8 @@ namespace BitirmeProjesi.Models
         public DateTime StartAt { get; set; }
         public DateTime FinishAt { get; set; }
         public DateTime CreateAt { get; set; }
+
+        [ForeignKey("CreateUser")]
         public int CreateUserId { get; set; }
 
         public User CreateUser { get; set; } = null!;

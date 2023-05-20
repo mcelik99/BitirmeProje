@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Giriş Yap";
+    //Layout = "~/Views/Shared/_Login.cshtml";
+}
+
+@model BitirmeProjesi.Models.Dto.UserLoginDto;
+
+<div class="container-login100">
+    <div class="wrap-login100 p-6">
+        <form class="login100-form" method="post" autocomplete="off"  asp-controller="Login" asp-action="User">
+            <span class="login100-form-title pb-5">
+                @ViewData["Title"]
+            </span>
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="panel panel-primary">
+                <div class="panel-body tabs-menu-body p-0 pt-5">
+                    <div class="wrap-input100 validate-input input-group">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-email text-muted" aria-hidden="true"></i>
+                        </a>
+                        <input class="input100 border-start-0 form-control ms-0" placeholder="E-Posta" asp-for="@Model.Email">
+                        <span class="d-block w-100 mt-2" asp-validation-for="@Model.Email"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input input-group" id="Password-toggle">
+                        <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
+                            <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
+                        </a>
+                        <input class="input100 border-start-0 form-control ms-0" placeholder="Şifre" type="password" asp-for="@Model.Password">
+                        <span class="d-block w-100 mt-2" asp-validation-for="@Model.Password"></span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn btn-primary">Giriş</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
