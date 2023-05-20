@@ -16,7 +16,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "BitirmeIdentityCookie";
     options.Cookie.HttpOnly = true;
 
-    options.LoginPath = "/Login/User";
+    options.LoginPath = "/Login/Academician";
     options.LogoutPath = "/Login/Out";
     options.AccessDeniedPath = "/Home/AccessDenied";
     options.SlidingExpiration = true;

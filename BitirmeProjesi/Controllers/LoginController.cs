@@ -30,19 +30,22 @@ namespace BitirmeProjesi.Controllers
         }
 
         [HttpGet]
-        public IActionResult User()
+        public IActionResult Academician()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+            }
+
             return View(new UserLoginDto());
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> User([FromForm] UserLoginDto Model)
+       
+        public async System.Threading.Tasks.Task<IActionResult> Academician([FromForm] UserLoginDto Model)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByEmailAsync(Model.Email);
-          
-
                 var Result = await this.SignInManager.PasswordSignInAsync(Model.Email, Model.Password, false, false);
 
                 if (Result.Succeeded)
@@ -62,7 +65,7 @@ namespace BitirmeProjesi.Controllers
         public async System.Threading.Tasks.Task<IActionResult> Out()
         {
             await this.SignInManager.SignOutAsync();
-            return RedirectToAction("User", "Login");
+            return RedirectToAction("Academician", "Login");
         }
 
 

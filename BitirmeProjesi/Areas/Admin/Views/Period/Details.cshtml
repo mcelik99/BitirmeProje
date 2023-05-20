@@ -1,0 +1,23 @@
+﻿@model Period
+
+<h2>Period Details</h2>
+
+<div>
+    <h4>Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+    </dl>
+
+    <!-- Diğer özelliklerin detayları için benzer dl ve dd etiketlerini kullanabilirsiniz -->
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

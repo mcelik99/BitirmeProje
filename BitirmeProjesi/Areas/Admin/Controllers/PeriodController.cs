@@ -2,41 +2,42 @@
 using BitirmeProjesi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace BitirmeProjesi.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class PeriodController : Controller
     {
-        private readonly BitirmeDBContext BitirmeDBContext;
-        public PeriodController(BitirmeDBContext BitirmeDBContext)
+        private readonly BitirmeDBContext _context;
+
+        public PeriodController(BitirmeDBContext context)
         {
-            this.BitirmeDBContext = BitirmeDBContext;
+            _context = context;
         }
 
-
-
-        // Yeni bir Period oluşturur
-        [HttpPost]
-        public ActionResult Create(Period period)
+        public async Task<IActionResult> Index()
         {
-            if (ModelState.IsValid)
-            {
-                
-                BitirmeDBContext.Periods.Add(period);
+            List<Period> periods = await _context.Periods.ToListAsync();
+            return View(periods);
+        }
 
-               
-                BitirmeDBContext.SaveChanges();
-                
+        // GET: Periods/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            return View(period);
-        }
+            Period period = await _context.Periods
+                .Include(p => p.CreateUser)
+                .Include(p => p.PeriodStudents)
+                    .ThenInclude(ps => ps.Student)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-
-        public ActionResult Detail(int id)
-        {
-           var period = BitirmeDBContext.Periods.FirstOrDefault(p => p.Id == id);
             if (period == null)
             {
                 return NotFound();
@@ -45,15 +46,113 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
             return View(period);
         }
 
-
-        public IActionResult Index()
+        // GET: Periods/Create
+        public IActionResult Create()
         {
-             int UserID = 1;
-
-            var periods = BitirmeDBContext.Periods.ToList();
-            return View(periods);
+            return View();
         }
 
+        // POST: Periods/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Name,StartAt,FinishAt")] Period period)
+        {
+            if (ModelState.IsValid)
+            {
+                period.CreateAt = DateTime.Now;
+                period.CreateUserId = Convert.ToInt32(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                _context.Add(period);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(period);
+        }
 
+        // GET: Periods/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Period period = await _context.Periods.FindAsync(id);
+            if (period == null)
+            {
+                return NotFound();
+            }
+            return View(period);
+        }
+
+        // POST: Periods/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartAt,FinishAt,CreateAt,CreateUserId")] Period period)
+        {
+            if (id != period.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(period);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PeriodExists(period.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(period);
+        }
+
+        // GET: Periods/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Period period = await _context.Periods
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (period == null)
+            {
+                return NotFound();
+            }
+
+            return View(period);
+        }
+
+        // POST: Periods/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            Period period = await _context.Periods.FindAsync(id);
+            _context.Periods.Remove(period);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool PeriodExists(int id)
+        {
+            return _context.Periods.Any(e => e.Id == id);
+        }
     }
 }
+
+
+
+
