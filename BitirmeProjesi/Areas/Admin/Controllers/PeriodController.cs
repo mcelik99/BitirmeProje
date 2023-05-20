@@ -20,7 +20,7 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Period> periods = await _context.Periods.ToListAsync();
+            List<Period> periods = await _context.Periods.Include(x=>x.CreateUser).ToListAsync();
             return View(periods);
         }
 

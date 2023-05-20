@@ -16,7 +16,7 @@ namespace BitirmeProjesi.Models
         [ForeignKey("CreateUser")]
         public int CreateUserId { get; set; }
 
-        public User CreateUser { get; set; } = null!;
+        public User? CreateUser { get; set; } = null!;
         public virtual List<PeriodStudent>? PeriodStudents { get; set; }
     }
 }
