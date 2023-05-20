@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using BitirmeProjesi.Models;
 using System.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BitirmeProjesi.Data
 {
@@ -29,7 +30,11 @@ namespace BitirmeProjesi.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Bitirme;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+             optionsBuilder.UseSqlServer("Data Source=(localdb)\\IEEE;Initial Catalog=Bitirme;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+
+                                         
+
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
