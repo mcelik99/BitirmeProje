@@ -16,8 +16,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "BitirmeIdentityCookie";
     options.Cookie.HttpOnly = true;
 
-    options.LoginPath = "/Sign/In";
-    options.LogoutPath = "/Sign/Out";
+    options.LoginPath = "/Login/User";
+    options.LogoutPath = "/Login/Out";
     options.AccessDeniedPath = "/Home/AccessDenied";
     options.SlidingExpiration = true;
     //options.ExpireTimeSpan = TimeSpan.FromMinutes(720);

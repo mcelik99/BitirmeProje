@@ -58,6 +58,13 @@ namespace BitirmeProjesi.Controllers
             return View(Model);
         }
 
+        [HttpGet]
+        public async System.Threading.Tasks.Task<IActionResult> Out()
+        {
+            await this.SignInManager.SignOutAsync();
+            return RedirectToAction("User", "Login");
+        }
+
 
         public ActionResult Create()
         {
