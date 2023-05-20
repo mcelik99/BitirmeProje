@@ -66,11 +66,12 @@
                 <td>Öğrenci Soyad</td>
 
                 <td>Konu</td>
-                <td>Danışman Onay</td>
                 <td>Akademisyen</td>
+                <td>Danışman Onay</td>
                 <td>Akademisyen Onay</td>
 
                 <td>Oluşturma Tarihi</td>
+                <td style="width:143px;"></td>
 
             </tr>
             <tbody>
@@ -98,7 +99,7 @@
                                 <span>Reddedildi</span>
                             }
                         </td>
-                      
+
                         <td>
                             @if (item.TeacherStatus == 0)
                             {
@@ -114,7 +115,14 @@
                             }
                         </td>
 
-                        <td>@item.CreateAt</td>
+                        <td>@item.CreateAt</td>>
+                        <td>
+                            @if (item.AdvisorStatus == 0)
+                            {
+                                <a class="btn btn-sm btn-success">Onayla</a>
+                                <a class="btn btn-sm btn-danger">Reddet</a>
+                            }
+                        </td>
                     </tr>
                 }
             </tbody>
