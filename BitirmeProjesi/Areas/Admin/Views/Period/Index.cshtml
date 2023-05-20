@@ -2,6 +2,74 @@
     Period Listesi
 </h1>
 
+
+@model List<BitirmeProjesi.Models.Period>
+
+
+<h2>Create Period</h2>
+<form action="/Period/Create" method="post">
+    <div>
+        <label for="name">AD:</label>
+        <input type="text" id="name" name="Name" required>
+    </div>
+    <div>
+        <label for="startAt">Başlangıç Tarihi :</label>
+        <input type="date" id="startAt" name="StartAt" required>
+    </div>
+    <div>
+        <label for="finishAt">Bitiş Tarihi:</label>
+        <input type="date" id="finishAt" name="FinishAt" required>
+    </div>
+    <div>
+        <label for="createAt">Oluşturma Tarihi :</label>
+        <input type="datetime-local" id="createAt" name="CreateAt" required>
+    </div>
+
+
+   
+
+    <a asp-area="Admin" asp-controller="Period" asp-action="Create" class="btn btn-success btn-sm">
+        <i class="fa fa-plus"></i>
+        Yeni Kayıt
+    </a>
+</form>
+
+
+<h2>Period List</h2>
+
+<div class="table-responsive">
+<table class="table table-striped table-bordered table-hover">
+    <tr>
+        <th>Ad</th>
+        <th>Başlangıç Tarihi</th>
+        <th>Bitiş Tarihi</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Oluşturan ID</th>
+        
+    </tr>
+    @foreach (var period in Model)
+    {
+        <tr>
+            <td>@period.Name</td>
+            <td>@period.StartAt</td>
+            <td>@period.FinishAt</td>
+            <td>@period.CreateAt</td>
+           
+          
+        </tr>
+    }
+</table>
+</div>
+
+
+ 
+
+
+
+
+
+
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-hover">
         <thead>
