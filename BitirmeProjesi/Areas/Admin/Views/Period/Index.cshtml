@@ -8,13 +8,13 @@
         <i class="fa fa-plus"></i>
         Yeni Kayıt
     </a>
-    <table class="table table-striped table-bordered table-hover">
+    <table class="table table-striped table-bordered table-hover mt-10" style="margin-top:10px;">
         <tr>
             <th>Ad</th>
             <th>Başlangıç Tarihi</th>
             <th>Bitiş Tarihi</th>
+            <th>Oluşturan Kullanıcı</th>
             <th>Oluşturma Tarihi</th>
-            <th>Oluşturan ID</th>
 
         </tr>
         @foreach (var period in Model)
@@ -25,7 +25,6 @@
                 <td>@period.FinishAt</td>
                 <td>@period.CreateAt</td>
                 <td>@period.CreateUser.Name</td>
-                <td>@period.CreateUser.Id</td>
             </tr>
         }
     </table>
