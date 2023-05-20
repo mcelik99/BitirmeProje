@@ -6,10 +6,6 @@ namespace BitirmeProjesi.Data
 {
     public partial class BitirmeDBContext : IdentityDbContext<User, Role, int>
     {
-        public BitirmeDBContext()
-        {
-        }
-
         public BitirmeDBContext(DbContextOptions<BitirmeDBContext> options) : base(options)
         {
 
