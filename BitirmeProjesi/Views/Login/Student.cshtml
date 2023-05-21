@@ -13,15 +13,15 @@
                     <h3 class="panel-title">@ViewData["Title"]</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post" autocomplete="off" asp-controller="Login" asp-action="Academician">
+                    <form method="post" autocomplete="off" asp-controller="Login" asp-action="Student">
                         <div asp-validation-summary="ModelOnly"></div>
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="email" type="email" value="mehmetcelik.99@outlook.com" autofocus asp-for="@Model.Email">
+                                <input class="form-control" placeholder="E-mail" name="email" type="email" value="muratcelik.27@outlook.com" autofocus asp-for="@Model.Email">
                                 <span asp-validation-for="@Model.Email"></span>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" value="Test1234" asp-for="@Model.Password">
+                                <input class="form-control" placeholder="Password" name="password" value="123123" asp-for="@Model.Password">
                                 <span asp-validation-for="@Model.Password"></span>
                             </div>
                             <button type="submit" class="btn btn-lg btn-success btn-block">

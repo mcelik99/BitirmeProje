@@ -41,18 +41,18 @@ namespace BitirmeProjesi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Academician([FromForm] StudentLoginDto Model)
+        public IActionResult Student([FromForm] StudentLoginDto Model)
         {
             if (ModelState.IsValid)
             {
-                Student student = this.BitirmeDBContext.Students.Where(x => x.Email == "").First();
+                Student student = this.BitirmeDBContext.Students.Where(x => x.Email == Model.Email && x.IsVerifed == true).FirstOrDefault();
 
                 if (student != null && student.Password == StudentPasswordHasher.Encrypt(Model.Password))
                 {
                     this.HttpContext.Session.SetInt32("STUDENT_ID", student.Id);
                     this.HttpContext.Session.SetString("STUDENT_FULL_NAME", student.FullName());
 
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    return RedirectToAction("Index", "Home", new { area = "Student" });
                 }
                 else
                 {
