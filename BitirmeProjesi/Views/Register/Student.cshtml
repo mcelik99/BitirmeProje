@@ -13,7 +13,14 @@
                     <h3 class="panel-title">@ViewData["Title"]</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post" autocomplete="off" asp-controller="Login" asp-action="Academician">
+                    @if (ViewData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @ViewData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <form method="post" asp-controller="Register" asp-action="Student">
                         <div asp-validation-summary="ModelOnly"></div>
                         <fieldset>
                             <div class="form-group">
@@ -26,7 +33,7 @@
                             </div>
 
                             <div class="form-group">
-                                <input class="form-control" placeholder="Öğrenci No" name="PasswordStudentNumber" asp-for="@Model.StudentNumber">
+                                <input class="form-control" placeholder="Öğrenci No" name="StudentNumber" asp-for="@Model.StudentNumber">
                                 <span asp-validation-for="@Model.StudentNumber"></span>
                             </div>
 

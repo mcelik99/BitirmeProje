@@ -1,13 +1,7 @@
 ﻿using BitirmeProjesi.Models;
 using BitirmeProjesi.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
 using BitirmeProjesi.Data;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Http;
 using BitirmeProjesi.Services;
 
 namespace BitirmeProjesi.Controllers
@@ -34,7 +28,9 @@ namespace BitirmeProjesi.Controllers
         {
             if (ModelState.IsValid)
             {
-                Student student = this._context.Students.Where(x => x.Email == Model.Email || x.StudentNumber == Model.Email).First();
+                Student student = this._context
+                    .Students.Where(x => x.Email == Model.Email || x.StudentNumber == Model.StudentNumber)
+                    .FirstOrDefault();
 
                 if (student == null)
                 {
@@ -45,12 +41,17 @@ namespace BitirmeProjesi.Controllers
                     student.Email = Model.Email;
                     student.Password = StudentPasswordHasher.Encrypt(Model.Password);
                     student.IsVerifed = false;
+                    student.VerifedCode = Model.Name.Substring(0, 2) + DateTime.Today.Year;
+                    student.CreateAt = DateTime.Now;
                     // TODO: Mail atılacak
                     this._context.Students.Add(student);
                     this._context.SaveChanges();
 
+                    ViewData["SuccessMessage"] = "Kayıt İşlemi Başarılı Lütfen Mailinizi Kontrol Ediniz !";
 
-                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    Model = new StudentRegisterDto();
+
+
                 }
                 else
                 {
@@ -59,35 +60,6 @@ namespace BitirmeProjesi.Controllers
             }
 
             return View(Model);
-        }
-
-
-
-        public ActionResult Create()
-        {
-            User user = new User();
-
-            user.Name = "Admin";
-            user.Surname = "Çelik";
-            user.PhoneNumber = "+905412723370";
-            user.Email = "mehmetcelik99@outlook.com";
-            user.UserName = "mehmetcelik99@outlook.com";
-
-
-            user.EmailConfirmed = true;
-            user.PhoneNumberConfirmed = true;
-
-            user.NormalizedUserName = user.UserName.ToUpper();
-            user.NormalizedEmail = user.Email.ToUpper();
-            //user.PasswordHash = this.PasswordHasher.HashPassword(user, "Test1234");
-
-            user.SecurityStamp = Guid.NewGuid().ToString();
-
-            this._context.Users.Add(user);
-            this._context.SaveChanges();
-            this._context.Database.CloseConnection();
-
-            return View();
         }
     }
 }
