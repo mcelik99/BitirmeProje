@@ -30,22 +30,31 @@ namespace BitirmeProjesi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Academician([FromForm] StudentRegisterDto Model)
+        public IActionResult Student([FromForm] StudentRegisterDto Model)
         {
             if (ModelState.IsValid)
             {
                 Student student = this._context.Students.Where(x => x.Email == Model.Email || x.StudentNumber == Model.Email).First();
 
-                if (student != null && student.Password == StudentPasswordHasher.Encrypt(Model.Password))
+                if (student == null)
                 {
-                    this.HttpContext.Session.SetInt32("STUDENT_ID", student.Id);
-                    this.HttpContext.Session.SetString("STUDENT_FULL_NAME", student.FullName());
+                    student = new Student();
+                    student.Name = Model.Name;
+                    student.Surname = Model.Surname;
+                    student.StudentNumber = Model.StudentNumber;
+                    student.Email = Model.Email;
+                    student.Password = StudentPasswordHasher.Encrypt(Model.Password);
+                    student.IsVerifed = false;
+                    // TODO: Mail atılacak
+                    this._context.Students.Add(student);
+                    this._context.SaveChanges();
+
 
                     return RedirectToAction("Index", "Home", new { area = "Admin" });
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Giriş İşlemi Başarısız");
+                    ModelState.AddModelError(string.Empty, "Daha Önce Alınmış Email veya Öğrenci Numarası");
                 }
             }
 

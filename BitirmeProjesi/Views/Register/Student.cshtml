@@ -1,6 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Giriş Yap";
-    //Layout = "~/Views/Shared/_Login.cshtml";
+    ViewData["Title"] = "Öğrenci Kayıt";
 }
 
 @model BitirmeProjesi.Models.Dto.StudentRegisterDto;
@@ -32,18 +31,17 @@
                             </div>
 
                             <div class="form-group">
-                                <input class="form-control" placeholder="E-mail" name="Email" type="email" asp-for="@Model.Email">
+                                <input class="form-control" placeholder="E-Posta" name="Email" type="email" asp-for="@Model.Email">
                                 <span asp-validation-for="@Model.Email"></span>
                             </div>
 
-
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="Password" value="Test1234" asp-for="@Model.Password">
+                                <input class="form-control" placeholder="Şifre" name="Password" type="password" asp-for="@Model.Password">
                                 <span asp-validation-for="@Model.Password"></span>
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="PasswordConfirm" value="Test1234" asp-for="@Model.PasswordConfirm">
-                                <span asp-validation-for="@Model.Password"></span>
+                                <input class="form-control" placeholder="Şifre Tekrar" name="PasswordConfirm" type="password" asp-for="@Model.PasswordConfirm">
+                                <span asp-validation-for="@Model.PasswordConfirm"></span>
                             </div>
                             <button type="submit" class="btn btn-lg btn-success btn-block">
                                 Giriş
