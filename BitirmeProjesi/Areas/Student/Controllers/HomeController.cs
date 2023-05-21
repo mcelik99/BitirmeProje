@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BitirmeProjesi.Areas.Student.Controllers
 {
     [Area("Student")]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {
