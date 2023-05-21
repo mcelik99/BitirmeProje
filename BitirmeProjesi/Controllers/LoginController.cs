@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using BitirmeProjesi.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using BitirmeProjesi.Services;
 
 namespace BitirmeProjesi.Controllers
 {
@@ -29,6 +33,37 @@ namespace BitirmeProjesi.Controllers
             this.UserManager = userManager;
         }
 
+
+        [HttpGet]
+        public IActionResult Student()
+        {
+            return View(new StudentLoginDto());
+        }
+
+        [HttpPost]
+        public IActionResult Academician([FromForm] StudentLoginDto Model)
+        {
+            if (ModelState.IsValid)
+            {
+                Student student = this.BitirmeDBContext.Students.Where(x => x.Email == "").First();
+
+                if (student != null && student.Password == StudentPasswordHasher.Encrypt(Model.Password))
+                {
+                    this.HttpContext.Session.SetInt32("STUDENT_ID", student.Id);
+                    this.HttpContext.Session.SetString("STUDENT_FULL_NAME", student.FullName());
+
+                    return RedirectToAction("Index", "Home", new { area = "Admin" });
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Giriş İşlemi Başarısız");
+                }
+            }
+
+            return View(Model);
+        }
+
+
         [HttpGet]
         public IActionResult Academician()
         {
@@ -41,7 +76,7 @@ namespace BitirmeProjesi.Controllers
         }
 
         [HttpPost]
-       
+
         public async System.Threading.Tasks.Task<IActionResult> Academician([FromForm] UserLoginDto Model)
         {
             if (ModelState.IsValid)

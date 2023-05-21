@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BitirmeProjesi.Models
 {
-    public  class Student
+    public class Student
     {
 
         [Key]
@@ -21,5 +21,12 @@ namespace BitirmeProjesi.Models
         public virtual List<ChatMessage>? ChatMessages { get; set; }
         public virtual List<Chat>? Chats { get; set; }
         public virtual List<PeriodStudent>? PeriodStudents { get; set; }
+
+
+
+        public string FullName()
+        {
+            return Name + " " + Surname;
+        }
     }
 }
