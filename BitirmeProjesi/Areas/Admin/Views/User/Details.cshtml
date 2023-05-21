@@ -1,0 +1,124 @@
+﻿@model User
+
+<h2 class="page-header">Kullanıcı Detay</h2>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Genel Bilgiler
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Ad</td>
+                            <td>@Model.Name</td>
+                        </tr>
+
+                        <tr>
+                            <td>Soyad</td>
+                            <td>@Model.Surname</td>
+                        </tr>
+                        <tr>
+                            <td>Danışman</td>
+                            <td>
+                                @if (Model.IsAdvisor == true)
+                                {
+                                    <span class="badge bg-primary">Danışman</span>
+                                }
+                                else if (Model.IsAdvisor == false)
+                                {
+                                    <span class="badge bg-primary" >Danışman Değil</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kullanıcı Adı</td>
+                            <td>@Model.UserName</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Kota</td>
+                            <td>@Model.Quota</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>@Model.Email</td>
+                        </tr>
+                        <tr>
+                            <td>Telefon Numara</td>
+                            <td>@Model.PhoneNumber</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+       
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <td>ID</td>
+
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Danışman</th>
+                <th>Kullanıcı Adı</th>
+
+                <th>Kota</th>
+                <th>Email</th>
+                <th>Telefon Numara</th>
+   
+                <td style="width:200px;"></td>
+
+            </tr>
+            <tbody>
+                
+                
+                    <tr>
+                        <td>@Model.Id</td>
+                        <td>@Model.Name</td>
+                         <td>@Model.Surname</td>
+                        <td>@Model.UserName</td>
+
+                        <td>
+                        @if (Model.IsAdvisor == true)
+                            {
+                                <span class="badge bg-primary">Danışman</span>
+                            }
+                        else if (Model.IsAdvisor == false)
+                            {
+                                <span>Danışman Değil</span>
+                            }
+                        </td>
+
+                         <td>@Model.Quota</td>
+                         <td>@Model.Email</td>
+                         <td>@Model.PhoneNumber</td>>
+
+                    </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
