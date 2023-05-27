@@ -83,6 +83,73 @@ namespace BitirmeProjesi.Migrations
                     b.ToTable("ChatMessages");
                 });
 
+            modelBuilder.Entity("BitirmeProjesi.Models.Participant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte?>("AdvisorStatus")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PeriodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PeriodId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Participants");
+                });
+
+            modelBuilder.Entity("BitirmeProjesi.Models.ParticipantTeacher", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte?>("Direction")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("ParticipantId")
+                        .HasColumnType("int");
+
+                    b.Property<byte?>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("ParticipantTeachers");
+                });
+
             modelBuilder.Entity("BitirmeProjesi.Models.Period", b =>
                 {
                     b.Property<int>("Id")
@@ -112,47 +179,6 @@ namespace BitirmeProjesi.Migrations
                     b.HasIndex("CreateUserId");
 
                     b.ToTable("Periods");
-                });
-
-            modelBuilder.Entity("BitirmeProjesi.Models.PeriodStudent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte?>("AdvisorStatus")
-                        .HasColumnType("tinyint");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte?>("TeacherStatus")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PeriodId");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PeriodStudents");
                 });
 
             modelBuilder.Entity("BitirmeProjesi.Models.Role", b =>
@@ -418,13 +444,13 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.Student", "Student")
                         .WithMany("Chats")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BitirmeProjesi.Models.User", "User")
                         .WithMany("Chats")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Student");
@@ -437,7 +463,7 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.Chat", "Chat")
                         .WithMany()
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BitirmeProjesi.Models.Student", "Student")
@@ -455,42 +481,55 @@ namespace BitirmeProjesi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BitirmeProjesi.Models.Participant", b =>
+                {
+                    b.HasOne("BitirmeProjesi.Models.Period", "Period")
+                        .WithMany("Participants")
+                        .HasForeignKey("PeriodId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BitirmeProjesi.Models.Student", "Student")
+                        .WithMany("Participants")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BitirmeProjesi.Models.User", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Period");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("BitirmeProjesi.Models.ParticipantTeacher", b =>
+                {
+                    b.HasOne("BitirmeProjesi.Models.Participant", null)
+                        .WithMany("ParticipantTeachers")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BitirmeProjesi.Models.User", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("BitirmeProjesi.Models.Period", b =>
                 {
                     b.HasOne("BitirmeProjesi.Models.User", "CreateUser")
                         .WithMany("Periods")
                         .HasForeignKey("CreateUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CreateUser");
-                });
-
-            modelBuilder.Entity("BitirmeProjesi.Models.PeriodStudent", b =>
-                {
-                    b.HasOne("BitirmeProjesi.Models.Period", "Period")
-                        .WithMany("PeriodStudents")
-                        .HasForeignKey("PeriodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BitirmeProjesi.Models.Student", "Student")
-                        .WithMany("PeriodStudents")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BitirmeProjesi.Models.User", "User")
-                        .WithMany("PeriodStudents")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Period");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -498,7 +537,7 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -507,7 +546,7 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -516,7 +555,7 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -525,13 +564,13 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BitirmeProjesi.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -540,13 +579,18 @@ namespace BitirmeProjesi.Migrations
                     b.HasOne("BitirmeProjesi.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BitirmeProjesi.Models.Participant", b =>
+                {
+                    b.Navigation("ParticipantTeachers");
                 });
 
             modelBuilder.Entity("BitirmeProjesi.Models.Period", b =>
                 {
-                    b.Navigation("PeriodStudents");
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("BitirmeProjesi.Models.Student", b =>
@@ -555,7 +599,7 @@ namespace BitirmeProjesi.Migrations
 
                     b.Navigation("Chats");
 
-                    b.Navigation("PeriodStudents");
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("BitirmeProjesi.Models.User", b =>
@@ -564,7 +608,7 @@ namespace BitirmeProjesi.Migrations
 
                     b.Navigation("Chats");
 
-                    b.Navigation("PeriodStudents");
+                    b.Navigation("Participants");
 
                     b.Navigation("Periods");
                 });

@@ -34,7 +34,7 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
             Period period = await _context.Periods
                 .Include(p => p.CreateUser)
-                .Include(p => p.PeriodStudents)
+                .Include(p => p.Participants)
                     .ThenInclude(ps => ps.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
 

@@ -17,6 +17,6 @@ namespace BitirmeProjesi.Models
         public int CreateUserId { get; set; }
 
         public User? CreateUser { get; set; } = null!;
-        public virtual List<PeriodStudent>? PeriodStudents { get; set; }
+        public virtual List<Participant>? Participants { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace BitirmeProjesi.Models
 
         public virtual List<ChatMessage>? ChatMessages { get; set; }
         public virtual List<Chat>? Chats { get; set; }
-        public virtual List<PeriodStudent>? PeriodStudents { get; set; }
+        public virtual List<Participant>? Participants { get; set; }
         public virtual List<Period>? Periods { get; set; }
 
 

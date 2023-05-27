@@ -75,7 +75,7 @@
 
             </tr>
             <tbody>
-                @foreach (var item in Model.PeriodStudents)
+                @foreach (var item in Model.Participants)
                 {
                     <tr>
                         <td>@item.Id</td>
@@ -84,7 +84,7 @@
                         <td>@item.Student.Surname</td>
 
                         <td>@item.Subject</td>
-                        <td>@item.User.FullName()</td>
+                       
                         <td>
                             @if (item.AdvisorStatus == 0)
                             {
@@ -95,21 +95,6 @@
                                 <span>Onaylandı</span>
                             }
                             else if (item.AdvisorStatus == 2)
-                            {
-                                <span>Reddedildi</span>
-                            }
-                        </td>
-
-                        <td>
-                            @if (item.TeacherStatus == 0)
-                            {
-                                <span class="badge bg-primary">İşlem Bekliyor</span>
-                            }
-                            else if (item.TeacherStatus == 1)
-                            {
-                                <span>Onaylandı</span>
-                            }
-                            else if (item.TeacherStatus == 2)
                             {
                                 <span>Reddedildi</span>
                             }

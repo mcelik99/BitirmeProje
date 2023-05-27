@@ -94,7 +94,7 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,7 +115,7 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,7 +135,7 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -153,13 +153,13 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,7 +179,7 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,7 +202,7 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.CreateUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,50 +223,48 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Chats_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PeriodStudents",
+                name: "Participants",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     PeriodId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdvisorStatus = table.Column<byte>(type: "tinyint", nullable: true),
-                    TeacherStatus = table.Column<byte>(type: "tinyint", nullable: true),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PeriodStudents", x => x.Id);
+                    table.PrimaryKey("PK_Participants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PeriodStudents_AspNetUsers_UserId",
+                        name: "FK_Participants_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PeriodStudents_Periods_PeriodId",
+                        name: "FK_Participants_Periods_PeriodId",
                         column: x => x.PeriodId,
                         principalTable: "Periods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PeriodStudents_Students_StudentId",
+                        name: "FK_Participants_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -294,12 +292,40 @@ namespace BitirmeProjesi.Migrations
                         column: x => x.ChatId,
                         principalTable: "Chats",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ChatMessages_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ParticipantTeachers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    ParticipantId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<byte>(type: "tinyint", nullable: true),
+                    Direction = table.Column<byte>(type: "tinyint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ParticipantTeachers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ParticipantTeachers_AspNetUsers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ParticipantTeachers_Participants_ParticipantId",
+                        column: x => x.ParticipantId,
+                        principalTable: "Participants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -367,24 +393,34 @@ namespace BitirmeProjesi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Periods_CreateUserId",
-                table: "Periods",
-                column: "CreateUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PeriodStudents_PeriodId",
-                table: "PeriodStudents",
+                name: "IX_Participants_PeriodId",
+                table: "Participants",
                 column: "PeriodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PeriodStudents_StudentId",
-                table: "PeriodStudents",
+                name: "IX_Participants_StudentId",
+                table: "Participants",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PeriodStudents_UserId",
-                table: "PeriodStudents",
+                name: "IX_Participants_UserId",
+                table: "Participants",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParticipantTeachers_ParticipantId",
+                table: "ParticipantTeachers",
+                column: "ParticipantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ParticipantTeachers_TeacherId",
+                table: "ParticipantTeachers",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Periods_CreateUserId",
+                table: "Periods",
+                column: "CreateUserId");
         }
 
         /// <inheritdoc />
@@ -409,13 +445,16 @@ namespace BitirmeProjesi.Migrations
                 name: "ChatMessages");
 
             migrationBuilder.DropTable(
-                name: "PeriodStudents");
+                name: "ParticipantTeachers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Chats");
+
+            migrationBuilder.DropTable(
+                name: "Participants");
 
             migrationBuilder.DropTable(
                 name: "Periods");
