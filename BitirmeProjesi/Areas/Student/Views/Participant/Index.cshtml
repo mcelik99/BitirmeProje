@@ -1,0 +1,64 @@
+﻿<h1 class="page-header">
+    Başvuru Durumu
+</h1>
+
+@model List<Participant>
+
+<div class="table-responsive">
+
+    <table class="table table-striped table-bordered table-hover mt-10" style="margin-top:10px;">
+        <thead>
+            <tr>
+
+                <th>Dönem Adı</th>
+                <th>Başlangış Tarihi</th>
+                <th>Bitiş Tarihi</th>
+                <th>Kayıt Tarihi</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Period.Name</td>
+                    <td>@item.Period.StartAt</td>
+                    <td>@item.Period.FinishAt</td>
+                    <td>@item.CreateAt</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <h3>Hoca Tercih Sırası</h3>
+                        <table class="table table-striped table-bordered table-hover mt-10" style="margin-top:10px;">
+                            <thead>
+                                <tr>
+                                    <th>Hoca Adı</th>
+                                    <th style="width:100px;">Durum</th>
+                                </tr>
+                            </thead>
+                            @foreach (var participantTeacher in item.ParticipantTeachers)
+                            {
+                                <tr>
+                                    <td>@participantTeacher.Teacher.FullName()</td>
+                                    <td>
+                                        @if (participantTeacher.Status == 0)
+                                        {
+                                            <span class="badge bg-primary">İşlem Bekliyor</span>
+                                        }
+                                        else if (participantTeacher.Status == 1)
+                                        {
+                                            <span>Onaylandı</span>
+                                        }
+                                        else if (participantTeacher.Status == 2)
+                                        {
+                                            <span>Reddedildi</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

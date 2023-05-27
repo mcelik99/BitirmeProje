@@ -110,9 +110,10 @@ namespace BitirmeProjesi.Controllers
 
             user.Name = "Admin";
             user.Surname = "Çelik";
-            user.PhoneNumber = "+905412723370";
-            user.Email = "mehmetcelik99@outlook.com";
-            user.UserName = "mehmetcelik99@outlook.com";
+            user.PhoneNumber = "+905412723379";
+            user.Email = "Murat@outlook.com";
+            user.UserName = "Murat@outlook.com";
+            user.IsAdvisor = true;
 
 
             user.EmailConfirmed = true;

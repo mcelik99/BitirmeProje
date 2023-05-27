@@ -20,7 +20,7 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Period> periods = await _context.Periods.Include(x=>x.CreateUser).ToListAsync();
+            List<Period> periods = await _context.Periods.Include(x => x.CreateUser).ToListAsync();
             return View(periods);
         }
 
@@ -32,10 +32,13 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Period period = await _context.Periods
+            Period period = await _context
+                .Periods
                 .Include(p => p.CreateUser)
                 .Include(p => p.Participants)
-                    .ThenInclude(ps => ps.Student)
+                .Include("Participants.Student")
+                .Include("Participants.ParticipantTeachers")
+                .Include("Participants.ParticipantTeachers.Teacher")
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (period == null)

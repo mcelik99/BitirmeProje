@@ -6,7 +6,6 @@
     <div class="panel-heading">
         Genel Bilgiler
     </div>
-    <!-- /.panel-heading -->
     <div class="panel-body">
 
         <div class="row">
@@ -54,7 +53,6 @@
     <div class="panel-heading">
         Katılımcı Öğrenci Listesi
     </div>
-    <!-- /.panel-heading -->
     <div class="panel-body">
 
         <table class="table table-striped table-bordered table-hover">
@@ -66,10 +64,7 @@
                 <td>Öğrenci Soyad</td>
 
                 <td>Konu</td>
-                <td>Akademisyen</td>
                 <td>Danışman Onay</td>
-                <td>Akademisyen Onay</td>
-
                 <td>Oluşturma Tarihi</td>
                 <td style="width:200px;"></td>
 
@@ -107,6 +102,40 @@
                                 <a class="btn btn-sm btn-success">Onayla</a>
                                 <a class="btn btn-sm btn-danger">Reddet</a>
                             }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="8">
+                            <h4>Hoca Tercih Sırası</h4>
+                            <table class="table table-striped table-bordered table-hover mt-10" style="margin-top:10px;">
+                                <thead>
+                                    <tr>
+                                        <th>Hoca Adı</th>
+                                        <th style="width:100px;">Durum</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var participantTeacher in item.ParticipantTeachers)
+                                {
+                                    <tr>
+                                        <td>@participantTeacher.Teacher.FullName()</td>
+                                        <td>
+                                            @if (participantTeacher.Status == 0)
+                                            {
+                                                <span class="badge bg-primary">İşlem Bekliyor</span>
+                                            }
+                                            else if (participantTeacher.Status == 1)
+                                            {
+                                                <span>Onaylandı</span>
+                                            }
+                                            else if (participantTeacher.Status == 2)
+                                            {
+                                                <span>Reddedildi</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
                         </td>
                     </tr>
                 }

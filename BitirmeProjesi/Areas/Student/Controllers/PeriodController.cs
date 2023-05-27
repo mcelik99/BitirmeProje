@@ -1,4 +1,5 @@
-﻿using BitirmeProjesi.Data;
+﻿using BitirmeProjesi.Areas.Student.Models.Dto;
+using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
 using BitirmeProjesi.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -20,64 +21,69 @@ namespace BitirmeProjesi.Areas.Student.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new EnrollViewModel
-            {
-                Users = _context.Users.Select(u => new SelectListItem
-                {
-                    Value = u.Id.ToString(),
-                    Text = u.FullName()
-                }).ToList(),
-                Periods = _context.Periods.Select(p => new SelectListItem
-                {
-                    Value = p.Id.ToString(),
-                    Text = p.Name
-                }).ToList()
-            };
+            var periods = _context.Periods.Where(x => x.FinishAt > DateTime.Now).ToList();
 
-            return View(viewModel);
+            return View(periods);
+        }
+
+        [HttpGet]
+        public IActionResult Participant(int id)
+        {
+            int StudentId = (int)this.HttpContext.Session.GetInt32("STUDENT_ID");
+            
+            if (_context.Participants.Any(x => x.StudentId == StudentId && x.PeriodId == id))
+            {
+                return RedirectToAction("Index", "Participant", new { area = "Student" });
+            }
+        
+            var teachers = _context.Users.Where(x => x.IsAdvisor == true).ToList();
+
+            ViewData["teachers"] = teachers;
+
+            return View(new ParticipantDto());
         }
 
         [HttpPost]
-        public IActionResult Enroll(EnrollViewModel enrollViewModel)
+        public IActionResult Participant(int id, ParticipantDto Model)
         {
-            /* if (ModelState.IsValid)
-             {
-                 foreach (var selectedUserId in enrollViewModel.SelectedUserIds)
-                 {
-                     var periodStudent = new PeriodStudent
-                     {
-                         Subject = enrollViewModel.Subject,
-                         UserId = selectedUserId,
-                         PeriodId = enrollViewModel.SelectedPeriodId
-                     };
+            var teachers = _context.Users.Where(x => x.IsAdvisor == true).ToList();
 
-                     _context.PeriodStudents.Add(periodStudent);
-                 }
+            ViewData["teachers"] = teachers;
 
-                 _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                Participant Participant = new Participant();
+                Participant.Subject = Model.Subject;
+                Participant.PeriodId = id;
+                Participant.StudentId = (int)this.HttpContext.Session.GetInt32("STUDENT_ID");
+                Participant.AdvisorStatus = 0;
+                Participant.CreateAt = DateTime.Now;
 
-                 return RedirectToAction("Index", "Home");
-             }
+                _context.Participants.Add(Participant);
+                _context.SaveChanges();
 
-             enrollViewModel.Users = _context.Users
-              .Select(u => new SelectListItem
-                  {
-                     Value = u.Id.ToString(),
-                      Text = u.FullName()
-                      })
-                      .ToList();
 
-             enrollViewModel.Periods = _context.Periods
-               .Select(p => new SelectListItem
-               {
-                   Value = p.Id.ToString(),
-                    Text = p.Name
-              })
-              .ToList();
-            */
-            return View();
+                for (byte i = 0; i < Model.Teachers.Count; i++)
+                {
+                    ParticipantTeacher ParticipantTeacher = new ParticipantTeacher();
+                    ParticipantTeacher.ParticipantId = Participant.Id;
+                    ParticipantTeacher.TeacherId = Model.Teachers[i];
+                    ParticipantTeacher.Status = 0;
+                    ParticipantTeacher.Direction = i;
+
+                    _context.ParticipantTeachers.Add(ParticipantTeacher);
+                }
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Participant", new { area = "Student" });
+
+            }
+
+
+            return View(Model);
         }
 
-        
+
     }
 }
