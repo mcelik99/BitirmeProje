@@ -1,7 +1,12 @@
 ﻿@{
     @using Microsoft.AspNetCore.Identity
     @inject SignInManager<User> SignInManagers
+
     @inject UserManager<User> UserManager
+
+    @inject BitirmeProjesi.Data.BitirmeDBContext _context;
+
+    User CurrentUser = _context.Users.Where(x => x.UserName == this.Context.User.Identity.Name).FirstOrDefault();
 
 }
 
@@ -39,7 +44,7 @@
 </head>
 <body>
     <div id="wrapper">
-      
+
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" href="index.html">Bitirme Takip Sistemi</a>
@@ -132,18 +137,31 @@
                             Anasayfa
                         </a>
                     </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="Period" asp-action="Index">
-                            <i class="fa fa-list fa-fw"></i>
-                            Dönem Listesi
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-area="Admin" asp-controller="User" asp-action="Index">
-                            <i class="fa fa-users fa-fw"></i>
-                            Kullanıcı Listesi
-                        </a>
-                    </li>
+                    @if (CurrentUser.IsAdvisor)
+                    {
+                        <li>
+                            <a asp-area="Admin" asp-controller="Period" asp-action="Index">
+                                <i class="fa fa-list fa-fw"></i>
+                                Dönem Listesi
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                                <i class="fa fa-users fa-fw"></i>
+                                Kullanıcı Listesi
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                                <i class="fa fa-users fa-fw"></i>
+                                Dönem Listesi
+                            </a>
+                        </li>
+                    }
+
                 </ul>
             </div>
         </aside>
