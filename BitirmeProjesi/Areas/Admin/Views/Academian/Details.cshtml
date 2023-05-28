@@ -1,0 +1,69 @@
+﻿@model Period
+
+<h2 class="page-header">Dönem Detayı</h2>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Genel Bilgiler
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Dönem Adı</td>
+                            <td>@Model.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Başlangıç</td>
+                            <td>@Model.StartAt</td>
+                        </tr>
+                        <tr>
+                            <td>Bitiş</td>
+                            <td>@Model.FinishAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Oluşturan Kullanıcı</td>
+                            <td>@Model.CreateUser.FullName()</td>
+                        </tr>
+                        <tr>
+                            <td>Kayıt Tarihi</td>
+                            <td>@Model.CreateAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Kabul Gören  Öğrenci Listeniz
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <td>ID</td>
+                <td>Öğrenci No</td>
+                <td>Öğrenci Ad</td>
+                <td>Öğrenci Soyad</td>
+                <td>Konu</td>
+                <td style="width:200px;"></td>
+            </tr>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
