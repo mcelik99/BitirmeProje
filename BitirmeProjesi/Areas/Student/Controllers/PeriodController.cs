@@ -36,7 +36,7 @@ namespace BitirmeProjesi.Areas.Student.Controllers
                 return RedirectToAction("Index", "Participant", new { area = "Student" });
             }
         
-            var teachers = _context.Users.Where(x => x.IsAdvisor == true).ToList();
+            var teachers = _context.Users.Where(x => x.IsAdvisor == false).ToList();
 
             ViewData["teachers"] = teachers;
 

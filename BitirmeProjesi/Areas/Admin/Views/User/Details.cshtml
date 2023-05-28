@@ -31,11 +31,11 @@
                             <td>
                                 @if (Model.IsAdvisor == true)
                                 {
-                                    <span class="badge bg-primary">Danışman</span>
+                                    <span class="badge bg-primary">Evet</span>
                                 }
-                                else if (Model.IsAdvisor == false)
+                                else
                                 {
-                                    <span class="badge bg-primary" >Danışman Değil</span>
+                                    <span class="badge bg-primary" >Hayır</span>
                                 }
                             </td>
                         </tr>
@@ -65,60 +65,5 @@
                 </table>
             </div>
         </div>
-    </div>
-</div>
-
-
-<div class="panel panel-primary">
-    <div class="panel-heading">
-       
-    </div>
-    <!-- /.panel-heading -->
-    <div class="panel-body">
-
-        <table class="table table-striped table-bordered table-hover">
-            <tr>
-                <td>ID</td>
-
-                <th>Ad</th>
-                <th>Soyad</th>
-                <th>Danışman</th>
-                <th>Kullanıcı Adı</th>
-
-                <th>Kota</th>
-                <th>Email</th>
-                <th>Telefon Numara</th>
-   
-                <td style="width:200px;"></td>
-
-            </tr>
-            <tbody>
-                
-                
-                    <tr>
-                        <td>@Model.Id</td>
-                        <td>@Model.Name</td>
-                         <td>@Model.Surname</td>
-                        <td>@Model.UserName</td>
-
-                        <td>
-                        @if (Model.IsAdvisor == true)
-                            {
-                                <span class="badge bg-primary">Danışman</span>
-                            }
-                        else if (Model.IsAdvisor == false)
-                            {
-                                <span>Danışman Değil</span>
-                            }
-                        </td>
-
-                         <td>@Model.Quota</td>
-                         <td>@Model.Email</td>
-                         <td>@Model.PhoneNumber</td>>
-
-                    </tr>
-                
-            </tbody>
-        </table>
     </div>
 </div>

@@ -1,5 +1,5 @@
 ﻿<h1 class="page-header">
-    Period Listesi
+    Dönem Listesi
 </h1>
 @model List<BitirmeProjesi.Models.Period>
 
@@ -26,8 +26,8 @@
                 <td>@period.FinishAt</td>
                 <td>@period.CreateAt</td>
                 <td>@period.CreateUser.Name</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@period.Id">
+                <td class="text-center">
+                    <a asp-action="Details" asp-route-id="@period.Id" class="btn btn-sm btn-primary">
                         Detay
                     </a>
                 </td>
