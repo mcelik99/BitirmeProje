@@ -25,5 +25,10 @@ namespace BitirmeProjesi.Areas.Student.Controllers
 
             base.OnActionExecuting(context);
         }
+
+        protected int getStudentID()
+        {
+            return (int)this.HttpContext.Session.GetInt32("STUDENT_ID");
+        }
     }
 }
