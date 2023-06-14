@@ -153,6 +153,28 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
         {
             return _context.Periods.Any(e => e.Id == id);
         }
+
+        public IActionResult Accept(int id)
+        {
+            var model = this._context.Participants.Find(id);
+
+            model.AdvisorStatus = 1;
+            this._context.Update(model);
+            this._context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = model.PeriodId });
+        }
+        
+        public IActionResult Reject(int id)
+        {
+            var model = this._context.Participants.Find(id);
+
+            model.AdvisorStatus = 2;
+            this._context.Update(model);
+            this._context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = model.PeriodId });
+        }
     }
 }
 

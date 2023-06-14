@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BitirmeProjesi.Models
 {
-    public  class Participant
+    public class Participant
     {
         [Key]
         public int Id { get; set; }
@@ -12,6 +12,8 @@ namespace BitirmeProjesi.Models
         public int PeriodId { get; set; }
         public int StudentId { get; set; }
         public string Subject { get; set; } = null!;
+
+        // 0=> Yeni Kayıt,1=>Kabul Edildi ,2=>Reddedildi
         public byte? AdvisorStatus { get; set; }
 
         public DateTime CreateAt { get; set; }

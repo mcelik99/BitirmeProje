@@ -89,13 +89,16 @@
                                 <span>Reddedildi</span>
                             }
                         </td>
-
-                        <td>@item.CreateAt</td>>
+                        <td>@item.CreateAt</td>
                         <td>
                             @if (item.AdvisorStatus == 0)
                             {
-                                <a class="btn btn-sm btn-success">Onayla</a>
-                                <a class="btn btn-sm btn-danger">Reddet</a>
+                                <a class="btn btn-sm btn-success" asp-area="Admin" asp-controller="Period" asp-action="Accept" asp-route-id="@item.Id">
+                                    Onayla
+                                </a>
+                                <a class="btn btn-sm btn-danger" asp-area="Admin" asp-controller="Period" asp-action="Reject" asp-route-id="@item.Id">
+                                    Reddet
+                                </a>
                             }
                         </td>
                     </tr>
