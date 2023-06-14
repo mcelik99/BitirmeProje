@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BitirmeProjesi.Areas.Student.Controllers
 {
-    [Area("Admin")]
+    [Area("Student")]
     [Authorize]
     public class ChatController : BaseController
     {
@@ -14,29 +14,41 @@ namespace BitirmeProjesi.Areas.Student.Controllers
 
         public ChatController(BitirmeDBContext context)
         {
-
             _context = context;
         }
 
         public IActionResult Index(int id)
         {
-           
+            int StudentId = this.getStudentID();
+            List<Chat> chats = this._context.Chats
+                 .Include("Student")
+                 .Include("User")
+                 .Include("ChatMessages")
+                 .Include("ChatMessages.User")
+                 .Include("ChatMessages.Student")
+                 .Where(x => x.StudentId == StudentId)
+                 .ToList();
+
+            return View(chats);
+        }
 
 
+        public IActionResult Details(int id)
+        {
             Chat chat = this._context.Chats
                 .Include("Student")
                 .Include("User")
                 .Include("ChatMessages")
                 .Include("ChatMessages.User")
                 .Include("ChatMessages.Student")
-                .Where(x => x.UserId == CurrentUser.Id && x.StudentId == id)
+                .Where(x => x.Id == id)
                 .FirstOrDefault();
 
             return View(chat);
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("ChatId,UserId,MessageBody")] ChatMessage chatMessage)
+        public IActionResult Create([Bind("ChatId,StudentId,MessageBody")] ChatMessage chatMessage)
         {
             chatMessage.CreateAt = DateTime.Now;
 
