@@ -1,4 +1,9 @@
-﻿@model Period
+﻿@using BitirmeProjesi.Models;
+@model Period
+
+@{
+    User CurrentUser = (User)ViewData["CurrentUser"];
+}
 
 <h2 class="page-header">Dönem Detayı</h2>
 
@@ -63,6 +68,30 @@
                 <td style="width:200px;"></td>
             </tr>
             <tbody>
+                @foreach (var item in Model.Participants)
+                {
+                    if (item.AdvisorStatus == 1)
+                    {
+                        foreach (var participantTeacher in item.ParticipantTeachers)
+                        {
+                            if (participantTeacher.TeacherId == CurrentUser.Id && participantTeacher.Status == 1)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Student.StudentNumber</td>
+                                    <td>@item.Student.Name</td>
+                                    <td>@item.Student.Surname</td>
+                                    <td>@item.Subject</td>
+                                    <td class="text-center">
+                                        <a asp-area="Admin" asp-controller="Message" asp-action="Create" asp-route-id="@item.StudentId" class="btn btn-sm btn-primary">
+                                            Mesaj Gönder
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
             </tbody>
         </table>
     </div>

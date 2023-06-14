@@ -13,6 +13,7 @@ namespace BitirmeProjesi.Models
 
         public int ParticipantId { get; set; }
 
+        //0=>Yeni Kayıt ,1=>Kabul Edildi,2=>Reddedildi
         public byte? Status { get; set; }
         public byte? Direction { get; set; }
 

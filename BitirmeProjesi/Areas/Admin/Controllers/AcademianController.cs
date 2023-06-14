@@ -33,6 +33,9 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            User CurrentUser = _context.Users.Where(x => x.UserName == this.HttpContext.User.Identity.Name).FirstOrDefault();
+            ViewData["CurrentUser"] = CurrentUser;
+
             if (id == null)
             {
                 return NotFound();
