@@ -17,5 +17,7 @@ namespace BitirmeProjesi.Models
 
         public  Student Student { get; set; } = null!;
         public  User User { get; set; } = null!;
+
+        public virtual List<ChatMessage>? ChatMessages { get; set; }
     }
 }

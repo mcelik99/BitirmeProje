@@ -1,0 +1,53 @@
+﻿@model Chat
+
+<h1 class="page-header">
+    @Model.Student.FullName()
+</h1>
+
+<div class="chat-panel panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-comments fa-fw"></i>
+        Mesajlaşma
+    </div>
+    <div class="panel-body">
+        <ul class="chat">
+            @foreach (var item in Model.ChatMessages)
+            {
+                <li class="left clearfix">
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            @if (item.Student != null)
+                            {
+                                <strong class="primary-font">@item.Student.FullName()</strong>
+                            }
+                            else if (item.User != null)
+                            {
+                                <strong class="primary-font">@item.User.FullName()</strong>
+                            }
+                            <small class="pull-right text-muted">
+                                <i class="fa fa-clock-o fa-fw"></i> @item.CreateAt
+                            </small>
+                        </div>
+                        <p>@item.MessageBody</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+   
+    <div class="panel-footer">
+      
+            <form method="post" asp-action="Create" style="width:100% !important">
+                <input  type="hidden" name="ChatId" value="@Model.Id">
+                <input type="hidden" name="UserId" value="@Model.UserId">
+               
+                <textarea name="MessageBody" placeholder="Mesajınız" style="width:100%; margin-bottom:10px;" required class="form-control"></textarea>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-warning btn-sm" id="btn-chat">
+                        Gönder
+                    </button>
+                </span>
+            </form>
+        
+    </div>
+</div>

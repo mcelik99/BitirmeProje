@@ -209,9 +209,9 @@ body {
     border-bottom: 1px dotted #999;
 }
 
-.chat li.left .chat-body {
-    margin-left: 60px;
-}
+    .chat li.left .chat-body {
+        /**margin-left: 60px;*/
+    }
 
 .chat li.right .chat-body {
     margin-right: 60px;
@@ -227,7 +227,7 @@ body {
 }
 
 .chat-panel .panel-body {
-    height: 350px;
+    max-height: 65vh;
     overflow-y: scroll;
 }
 
