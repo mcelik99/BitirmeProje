@@ -46,7 +46,7 @@ namespace BitirmeProjesi.Areas.Student.Controllers
         [HttpPost]
         public IActionResult Participant(int id, ParticipantDto Model)
         {
-            var teachers = _context.Users.Where(x => x.IsAdvisor == true).ToList();
+            var teachers = _context.Users.Where(x => x.IsAdvisor == false).ToList();
 
             ViewData["teachers"] = teachers;
 
