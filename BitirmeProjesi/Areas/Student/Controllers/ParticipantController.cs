@@ -22,7 +22,7 @@ namespace BitirmeProjesi.Areas.Student.Controllers
 
         public IActionResult Index()
         {
-            int StudentId = (int)this.HttpContext.Session.GetInt32("STUDENT_ID");
+            int StudentId = this.getStudentID();
 
             var participants = _context.Participants
                 .Include(y => y.Period)
