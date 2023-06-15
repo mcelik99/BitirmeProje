@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace BitirmeProjesi.Areas.Student.Controllers
 {
     [Area("Student")]
-    [Authorize]
     public class ChatController : BaseController
     {
         private readonly BitirmeDBContext _context;

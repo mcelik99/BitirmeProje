@@ -1,0 +1,26 @@
+﻿
+
+
+@model List<BitirmeProjesi.Models.Chat>
+
+<h1>Chat</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Hoca</th>
+            <th>Son Mesaj</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var chat in Model)
+        {
+            <tr>
+                <td>@chat.User.FullName()</td>
+                <td>@(chat.ChatMessages?.LastOrDefault()?.MessageBody ?? "")</td>
+                <td><a asp-action="Details" asp-route-id="@chat.Id" class="btn btn-sm btn-primary" >Detaylar </a></td>
+            </tr>
+        }
+    </tbody>
+</table>
