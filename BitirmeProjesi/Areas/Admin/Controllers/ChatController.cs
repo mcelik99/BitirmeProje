@@ -1,11 +1,8 @@
-﻿using Azure.Core;
-using BitirmeProjesi.Data;
+﻿using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
-using System.Net;
 using BitirmeProjesi.Services;
 
 namespace BitirmeProjesi.Areas.Admin.Controllers

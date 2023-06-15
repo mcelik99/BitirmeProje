@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
+using BitirmeProjesi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddDbContext<BitirmeDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<BitirmeDBContext>();
+
+builder.Services.AddScoped<MailService>();
+builder.Services.AddScoped<ParticipantService>();
 
 
 builder.Services.ConfigureApplicationCookie(options =>

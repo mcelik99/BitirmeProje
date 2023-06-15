@@ -23,7 +23,11 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
             User CurrentUser = _context.Users.Where(x => x.UserName == this.HttpContext.User.Identity.Name).FirstOrDefault();
 
 
-            string Sql = "Select Periods.* from Periods Left Join Participants on Participants.PeriodId = Periods.Id Left Join ParticipantTeachers on ParticipantTeachers.ParticipantId = Participants.Id Where ParticipantTeachers.TeacherId =  " + CurrentUser.Id;
+            string Sql = "Select Periods.* from Periods " +
+                "Left Join Participants on Participants.PeriodId = Periods.Id " +
+                "Left Join ParticipantTeachers on ParticipantTeachers.ParticipantId = Participants.Id " +
+                "Where ParticipantTeachers.TeacherId =  " + CurrentUser.Id+
+                "Group by Periods.Id,Periods.Name,Periods.StartAt,Periods.FinishAt,Periods.CreateUserId,Periods.CreateAt";
 
             List<Period> result = _context.Periods.FromSqlRaw(Sql).ToList();
 
@@ -40,6 +44,33 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            Period period = await _context
+                .Periods
+                .Include(p => p.CreateUser)
+                .Include(p => p.Participants)
+                .Include("Participants.Student")
+                .Include("Participants.ParticipantTeachers")
+                .Include("Participants.ParticipantTeachers.Teacher")
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (period == null)
+            {
+                return NotFound();
+            }
+
+            return View(period);
+        }
+
+        public async Task<IActionResult> Participants(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            User CurrentUser = _context.Users.Where(x => x.UserName == this.HttpContext.User.Identity.Name).FirstOrDefault();
+            ViewData["CurrentUser"] = CurrentUser;
 
             Period period = await _context
                 .Periods

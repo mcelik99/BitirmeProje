@@ -1,0 +1,102 @@
+﻿@using BitirmeProjesi.Models;
+@model Period
+@inject BitirmeProjesi.Services.ParticipantService ParticipantService;
+
+@{
+    User CurrentUser = (User)ViewData["CurrentUser"];
+}
+
+<h2 class="page-header">Dönem Detayı</h2>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Dönem Detayı
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>ID</td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td>Dönem Adı</td>
+                            <td>@Model.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Başlangıç</td>
+                            <td>@Model.StartAt</td>
+                        </tr>
+                        <tr>
+                            <td>Bitiş</td>
+                            <td>@Model.FinishAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Oluşturan Kullanıcı</td>
+                            <td>@Model.CreateUser.FullName()</td>
+                        </tr>
+                        <tr>
+                            <td>Kayıt Tarihi</td>
+                            <td>@Model.CreateAt</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Onay Bekleyen Öğrenciler
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover">
+            <tr>
+                <td>ID</td>
+                <td>Öğrenci No</td>
+                <td>Öğrenci Ad</td>
+                <td>Öğrenci Soyad</td>
+                <td>Akademisyen</td>
+                <td>Konu</td>
+            </tr>
+            <tbody>
+                @foreach (var item in Model.Participants)
+                {
+                    if (item.AdvisorStatus == 1)
+                    {
+                        Tuple<ParticipantTeacher, bool> tuple = ParticipantService.Display( CurrentUser.Id, item.ParticipantTeachers);
+
+                        if (tuple.Item2)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Student.StudentNumber</td>
+                                <td>@item.Student.Name</td>
+                                <td>@item.Student.Surname</td>
+                                <td>@tuple.Item1.Teacher.FullName()</td>
+                                <td>@item.Subject</td>
+                                <td class="text-center">
+                                    <a class="btn btn-success btn-sm" asp-area="Admin" asp-controller="Academian" asp-action="Accept" asp-route-id="@tuple.Item1.Id">
+                                        Onayla
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" asp-area="Admin" asp-controller="Academian" asp-action="Reject" asp-route-id="@tuple.Item1.Id">
+                                        Reddet
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

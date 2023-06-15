@@ -64,8 +64,8 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
                 user.EmailConfirmed = true;
                 user.PhoneNumberConfirmed = true;
 
-                user.NormalizedUserName = user.UserName.ToUpper();
-                user.NormalizedEmail = user.Email.ToUpper();
+                user.NormalizedUserName = user.UserName.ToUpperInvariant();
+                user.NormalizedEmail = user.Email.ToUpperInvariant();
 
               
 
