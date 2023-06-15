@@ -12,10 +12,12 @@ namespace BitirmeProjesi.Controllers
     {
 
         private readonly BitirmeDBContext _context;
+        private readonly MailService _mailService;
 
-        public RegisterController(BitirmeDBContext context)
+        public RegisterController(BitirmeDBContext context, MailService mailService)
         {
             this._context = context;
+            _mailService = mailService; 
         }
 
 
@@ -53,9 +55,7 @@ namespace BitirmeProjesi.Controllers
                     string subject = "Hesap Doğrulama Kodu";
                     string body = $"Hesap doğrulama kodunuz: {student.VerifedCode}";
 
-                    SendEmail(emailAddress, subject, body);
-
-
+                    _mailService.SendEmail(emailAddress, subject, body);
 
                     ViewData["SuccessMessage"] = "Kayıt İşlemi Başarılı Lütfen Mailinizi Kontrol Ediniz !";
 
@@ -103,28 +103,6 @@ namespace BitirmeProjesi.Controllers
             return View();
         }
 
-        private void SendEmail(string emailAddress, string subject, string body)
-        {
-            string smtpHost = "smtp.gmail.com"; // SMTP sunucu adresi
-            int smtpPort = 587; // SMTP sunucu portu
-            string smtpUsername = "bitirmeornek@gmail.com"; // SMTP sunucu kullanıcı adı
-            string smtpPassword = "rnloubgenjjjksax"; // SMTP sunucu şifresi
-
-            using (var client = new SmtpClient(smtpHost, smtpPort))
-            {
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                client.EnableSsl = true;
-
-                using (var message = new MailMessage(smtpUsername, emailAddress))
-                {
-                    message.Subject = subject;
-                    message.Body = body;
-                    message.IsBodyHtml = false;
-
-                    client.Send(message);
-                }
-            }
-        }
+       
     }
 }
