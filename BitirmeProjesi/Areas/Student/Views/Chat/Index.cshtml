@@ -1,7 +1,7 @@
 ﻿@model List<BitirmeProjesi.Models.Chat>
 
 <h1 class="page-header">
-    Chat
+    Mesaj Listesi
 </h1>
 
  <table class="table table-striped table-bordered table-hover">
@@ -18,7 +18,7 @@
             <tr>
                 <td>@chat.User.FullName()</td>
                 <td>@(chat.ChatMessages?.LastOrDefault()?.MessageBody ?? "")</td>
-                <td><a asp-action="Details" asp-route-id="@chat.Id" class="btn btn-sm btn-primary">Detaylar </a></td>
+                <td class="text-center"><a asp-action="Details" asp-route-id="@chat.Id" class="btn btn-sm btn-primary">Detaylar </a></td>
             </tr>
         }
     </tbody>
