@@ -100,7 +100,15 @@ namespace BitirmeProjesi.Controllers
         public async System.Threading.Tasks.Task<IActionResult> Out()
         {
             await this.SignInManager.SignOutAsync();
-            return RedirectToAction("Academician", "Login");
+            return RedirectToAction("Index", "Home");
+        }
+        
+        [HttpGet]
+        public async System.Threading.Tasks.Task<IActionResult> StudentOut()
+        {
+            HttpContext.Session.Remove("STUDENT_ID");
+            HttpContext.Session.Remove("STUDENT_FULL_NAME");
+            return RedirectToAction("Index", "Home");
         }
 
 
