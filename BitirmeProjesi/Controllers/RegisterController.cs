@@ -3,6 +3,8 @@ using BitirmeProjesi.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
 using BitirmeProjesi.Data;
 using BitirmeProjesi.Services;
+using System.Net.Mail;
+using System.Net;
 
 namespace BitirmeProjesi.Controllers
 {
@@ -47,11 +49,19 @@ namespace BitirmeProjesi.Controllers
                     this._context.Students.Add(student);
                     this._context.SaveChanges();
 
+                    string emailAddress = student.Email;
+                    string subject = "Hesap Doğrulama Kodu";
+                    string body = $"Hesap doğrulama kodunuz: {student.VerifedCode}";
+
+                    SendEmail(emailAddress, subject, body);
+
+
+
                     ViewData["SuccessMessage"] = "Kayıt İşlemi Başarılı Lütfen Mailinizi Kontrol Ediniz !";
 
                     Model = new StudentRegisterDto();
 
-
+                    return RedirectToAction("Verify");
                 }
                 else
                 {
@@ -60,6 +70,61 @@ namespace BitirmeProjesi.Controllers
             }
 
             return View(Model);
+        }
+        [HttpGet]
+        public IActionResult Verify()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Verify(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                ViewData["ErrorMessage"] = "Geçersiz doğrulama kodu.";
+                return View();
+            }
+
+            Student student = this._context.Students.FirstOrDefault(x => x.VerifedCode == code);
+
+            if (student != null)
+            {
+                student.IsVerifed = true;
+                this._context.SaveChanges();
+
+                ViewData["SuccessMessage"] = "Hesabınız başarıyla doğrulandı!";
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Geçersiz doğrulama kodu.";
+            }
+
+            return View();
+        }
+
+        private void SendEmail(string emailAddress, string subject, string body)
+        {
+            string smtpHost = "smtp.gmail.com"; // SMTP sunucu adresi
+            int smtpPort = 587; // SMTP sunucu portu
+            string smtpUsername = "bitirmeornek@gmail.com"; // SMTP sunucu kullanıcı adı
+            string smtpPassword = "rnloubgenjjjksax"; // SMTP sunucu şifresi
+
+            using (var client = new SmtpClient(smtpHost, smtpPort))
+            {
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+                client.EnableSsl = true;
+
+                using (var message = new MailMessage(smtpUsername, emailAddress))
+                {
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = false;
+
+                    client.Send(message);
+                }
+            }
         }
     }
 }

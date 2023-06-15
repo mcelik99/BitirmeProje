@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Hesap Doğrulama";
+}
+
+<h2>Hesap Doğrulama</h2>
+
+@if (!string.IsNullOrEmpty(ViewData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">
+        @ViewData["SuccessMessage"]
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form method="post" asp-controller="Register" asp-action="Verify">
+    <div class="form-group">
+        <label for="code">Doğrulama Kodu:</label>
+        <input type="text" id="code" name="code" class="form-control" required >
+    </div>
+    <button type="submit" class="btn btn-primary">Doğrula</button>
+</form>
