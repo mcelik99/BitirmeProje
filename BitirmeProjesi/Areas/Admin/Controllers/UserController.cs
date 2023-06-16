@@ -1,5 +1,6 @@
 ﻿using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
+using BitirmeProjesi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,15 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
     {
         private readonly BitirmeDBContext _context;
         private IPasswordHasher<User> PasswordHasher;
+        private MailService _mailService;
+        private GenerateRandomPassword _generateRandomPassword;
 
-        public UserController(BitirmeDBContext context, IPasswordHasher<User> passwordHasher)
+        public UserController(BitirmeDBContext context, IPasswordHasher<User> passwordHasher,MailService mailService,GenerateRandomPassword generateRandomPassword)
         {
             this.PasswordHasher = passwordHasher;
             _context = context;
+            _mailService = mailService;
+            _generateRandomPassword = generateRandomPassword;
         }
 
         // GET: User
@@ -53,7 +58,7 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
         // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Surname,PasswordHash,Email,PhoneNumber,IsAdvisor,Quota")] User user)
+        public async Task<IActionResult> Create([Bind("Name,Surname,Email,PhoneNumber,IsAdvisor,Quota")] User user)
         {
 
           
@@ -67,9 +72,16 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
                 user.NormalizedUserName = user.UserName.ToUpperInvariant();
                 user.NormalizedEmail = user.Email.ToUpperInvariant();
 
-              
+                // Rastgele şifre oluştur
+                string randomPassword =_generateRandomPassword.GeneratePassword(8);
 
-                user.PasswordHash = this.PasswordHasher.HashPassword(user , user.PasswordHash);
+                // Kullanıcıya rastgele şifreyi e-posta ile gönder
+                string subject = "Değerli Öğretim Görevlimiz  İçin Rastgele Şifre";
+                string body = $" Değerli Öğretim Görevlimiz Yeni şifreniz: {randomPassword}";
+                _mailService.SendEmail(user.Email, subject, body);
+
+                string hashedPassword=this.PasswordHasher.HashPassword(user , randomPassword);
+                user.PasswordHash = hashedPassword;
 
                 user.SecurityStamp = Guid.NewGuid().ToString();
 
@@ -166,5 +178,7 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
         {
             return _context.Users.Any(u => u.Id == id);
         }
+
+
     }
 }

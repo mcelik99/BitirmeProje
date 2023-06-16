@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Teachers" class="control-label">StartAt</label>
+        <label asp-for="Teachers" class="control-label">Lütfen dersi almak istediğiniz hocayı seçiniz</label>
 
         <select id="Teachers" multiple class="form-control" name="Teachers[]">
             @foreach (var item in (List<User>)ViewData["teachers"])

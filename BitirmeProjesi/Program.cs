@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
 using BitirmeProjesi.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<BitirmeDBCon
 
 builder.Services.AddScoped<MailService>();
 builder.Services.AddScoped<ParticipantService>();
+builder.Services.AddScoped<GenerateRandomPassword>();
 
 
 builder.Services.ConfigureApplicationCookie(options =>

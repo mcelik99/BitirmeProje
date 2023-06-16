@@ -88,5 +88,27 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
             return View(period);
         }
+
+        public IActionResult Accept(int id)
+        {
+            var model = this._context.ParticipantTeachers.Find(id);
+
+            model.Status = 1;
+            this._context.Update(model);
+            this._context.SaveChanges();
+
+            return RedirectToAction("Index" );
+        }
+
+        public IActionResult Reject(int id)
+        {
+            var model = this._context.ParticipantTeachers.Find(id);
+
+            model.Status = 2;
+            this._context.Update(model);
+            this._context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
     }
 }

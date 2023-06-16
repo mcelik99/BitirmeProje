@@ -1,0 +1,32 @@
+﻿@model List<BitirmeProjesi.Models.Student>
+
+<h1 class="page-header">Öğrenci Listesi</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>E-Posta</th>
+            <th>Numara</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Id</td>
+                <td>@student.Name</td>
+                <td>@student.Surname</td>
+                <td>@student.Email</td>
+                <td>@student.StudentNumber</td>
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>
