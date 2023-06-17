@@ -13,11 +13,13 @@ namespace BitirmeProjesi.Controllers
 
         private readonly BitirmeDBContext _context;
         private readonly MailService _mailService;
+        private readonly GenerateRandomPassword _generateRandomPassword;
 
-        public RegisterController(BitirmeDBContext context, MailService mailService)
+        public RegisterController(BitirmeDBContext context, MailService mailService, GenerateRandomPassword generateRandomPassword)
         {
             this._context = context;
-            _mailService = mailService; 
+            _mailService = mailService;
+            _generateRandomPassword = generateRandomPassword;
         }
 
 
@@ -45,7 +47,7 @@ namespace BitirmeProjesi.Controllers
                     student.Email = Model.Email;
                     student.Password = StudentPasswordHasher.Encrypt(Model.Password);
                     student.IsVerifed = false;
-                    student.VerifedCode = Model.Name.Substring(0, 2) + DateTime.Today.Year;
+                    student.VerifedCode = _generateRandomPassword.GeneratePassword(6);
                     student.CreateAt = DateTime.Now;
                     // TODO: Mail atılacak
                     this._context.Students.Add(student);
