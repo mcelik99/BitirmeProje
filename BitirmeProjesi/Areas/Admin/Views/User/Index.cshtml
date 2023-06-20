@@ -13,7 +13,7 @@
             <th>ID</th>
             <th>Ad</th>
             <th>Soyad</th>
-            <th>Akademisyen</th>
+            <th>Danışman</th>
             <th style="width:200px;"></th>
         </tr>
         @foreach (var user in Model)
@@ -40,4 +40,14 @@
             </tr>
         }
     </table>
+    <form asp-area="Admin" asp-controller="User" asp-action="UpdateQuotaForAllUsers" method="post" class="form-inline">
+        <div class="form-group">
+            <label >Akademisyen kota yenile.</label>
+            <label  for="quotaInput">Kota:</label>
+            <div class="input-group">
+                <input type="number" class="form-control"  id="quotaInput" name="quota" required >
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Kota Güncelle</button>
+    </form>
 </div>

@@ -59,32 +59,24 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Surname,Email,PhoneNumber,IsAdvisor,Quota")] User user)
-        {
-
-          
+        {         
             if (ModelState.IsValid)
             {
                 
                 user.UserName = user.Email;
                 user.EmailConfirmed = true;
                 user.PhoneNumberConfirmed = true;
-
                 user.NormalizedUserName = user.UserName.ToUpperInvariant();
                 user.NormalizedEmail = user.Email.ToUpperInvariant();
-
                 // Rastgele şifre oluştur
                 string randomPassword =_generateRandomPassword.GeneratePassword(8);
-
                 // Kullanıcıya rastgele şifreyi e-posta ile gönder
                 string subject = "Değerli Öğretim Görevlimiz  İçin Rastgele Şifre";
                 string body = $" Değerli Öğretim Görevlimiz Yeni şifreniz: {randomPassword}";
                 _mailService.SendEmail(user.Email, subject, body);
-
                 string hashedPassword=this.PasswordHasher.HashPassword(user , randomPassword);
                 user.PasswordHash = hashedPassword;
-
                 user.SecurityStamp = Guid.NewGuid().ToString();
-
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -177,6 +169,24 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
         private bool UserExists(int id)
         {
             return _context.Users.Any(u => u.Id == id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateQuotaForAllUsers(int quota)
+        {
+            if (ModelState.IsValid)
+            {
+                List<User> users = await _context.Users.ToListAsync();
+                foreach (User user in users)
+                {
+                    user.Quota = quota;
+                    _context.Entry(user).State = EntityState.Modified;
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
         }
 
 
