@@ -19,6 +19,9 @@ namespace BitirmeProjesi.Models
 
         [ForeignKey("TeacherId")]
         public User Teacher { get; set; } = null!;
+
+        [ForeignKey("ParticipantId")]
+        public Participant Participant { get; set; } = null!;
        
     }
 }

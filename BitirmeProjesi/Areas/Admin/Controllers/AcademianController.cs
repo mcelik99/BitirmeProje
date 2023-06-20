@@ -3,6 +3,7 @@ using BitirmeProjesi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BitirmeProjesi.Areas.Admin.Controllers
 {
@@ -93,47 +94,30 @@ namespace BitirmeProjesi.Areas.Admin.Controllers
 
         public IActionResult Accept(int id)
         {
-            var model = this._context.ParticipantTeachers.Find(id);
-            var user = _context.Users.FirstOrDefault(u => u.Id == model.TeacherId);
-            if (user != null && user.Quota > 0)
-            {
-                // Kullanıcının kotasını 1 azalt
-                user.Quota--;
-                _context.Update(user);
-                _context.SaveChanges();
+            ParticipantTeacher model = this._context.ParticipantTeachers.Include(x => x.Participant).Include(y => y.Teacher).Where(z=>z.Id == id).FirstOrDefault();
 
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            int onaySayisi = _context.ParticipantTeachers.Count(pt => pt.TeacherId == model.TeacherId && pt.Status == 1 && pt.Participant.PeriodId == model.Participant.PeriodId);
+            if (model.Teacher.Quota > onaySayisi)
+            {
 
                 model.Status = 1;
                 this._context.Update(model);
-
-                ViewBag.Message = "Kota azaltıldı.  Kalan Kota: " + user.Quota.ToString();
 
             }
             else
             {
                 ViewBag.Message = "Kota dolu.";
             }
-
             this._context.SaveChanges();
 
+            TempData["Message"] = ViewBag.Message;
+            return RedirectToAction("Participants", new { id = model.Participant.PeriodId, message = ViewBag.Message });
 
-            if (model != null)
-            {
-                var participantId = model.ParticipantId;
-                var participant = _context.Participants.FirstOrDefault(p => p.Id == participantId);
-                if (participant != null)
-                {
-                    var periodId = participant.PeriodId;
-                    var period = _context.Periods.FirstOrDefault(p => p.Id == periodId);
-                    if (period != null)
-                    {
-                        TempData["Message"] = ViewBag.Message;
-                        return RedirectToAction("Participants", new { id = period.Id, message = ViewBag.Message });
-
-                    }
-                }
-            }
-            return RedirectToAction("Index");
         }
 
 
